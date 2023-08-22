@@ -10,7 +10,10 @@ sleep:
 
 ####################################################################################################################
 # Run ETL
+run-main-job:
+	docker exec jobmanager ./bin/flink run --python ./src/run_checkout_attrs.py
 
+run: down up sleep run-main-job
 
 
 ####################################################################################################################
@@ -18,8 +21,8 @@ sleep:
 viz:
 	open http://localhost:3000
 
-ui:
+flink-ui:
 	open http://localhost:8081/
 
-# postgres:
-# 	docker exec -ti postgres psql postgres://postgres:postgres@localhost:5432/postgres
+postgres:
+	docker exec -ti postgres psql postgres://postgres:postgres@localhost:5432/postgres

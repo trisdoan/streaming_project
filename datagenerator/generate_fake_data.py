@@ -28,7 +28,7 @@ def generate_user_data(user_recs):
         )
         curr.execute(
             """INSERT INTO commerce.products
-            (id, name, description, price) VALUEA (%s, %s, %s, %s)""",
+            (id, name, description, price) VALUES (%s, %s, %s, %s)""",
             (id, fake.name(), fake.text(), fake.random_int(min=1, max=100))
         )
         conn.commit()
@@ -143,7 +143,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-nu",
-        "user_recs",
+        "--user_recs",
         type=int,
         help="Number of user records to generate",
         default=100,

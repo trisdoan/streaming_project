@@ -2,6 +2,38 @@ version: "2.2"
 
 services:
 
+  jobmanager:
+    container_name: jobmanager
+    build:
+      context: ./container/flink/
+    ports:
+      - "8081:8081"
+      - "9249:9249"
+    command: jobmanager
+    volumes:
+      - ./src:/opt/flink/src
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager        
+
+  taskmanager:
+    container_name: taskmanager
+    build:
+      context: ./container/flink/
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    ports:
+      - "9250:9249"
+    volumes:
+      - ./src:/opt/flink/src
+    scale: 1
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+        taskmanager.numberOfTaskSlots: 2        
 
   zookeeper:
     image: docker.io/bitnami/zookeeper:3.8
@@ -35,14 +67,14 @@ services:
       - POSTGRES_DB=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - ./container/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   datagenerator:
     build:
       context: ./container/datagenerator/
-    command: python /opt/datagenerator/gen_fake_data.py
+    command: python /opt/datagenerator/generate_fake_data.py
     volumes:
       - ./datagenerator:/opt/datagenerator
     container_name: datagenerator
@@ -50,3 +82,21 @@ services:
     depends_on:
       - postgres
       - kafka
+
+  prometheus:
+    image: prom/prometheus:v2.37.1
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./container/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
+  grafana:
+    image: grafana/grafana:8.4.0
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=flink
+    volumes:
+      - ./container/grafana/provisioning/:/etc/grafana/provisioning/

@@ -75,9 +75,6 @@ def run_checkout_attribution_job(
     )
 
 
-
-    pass
-
 if __name__ == '__main__':
     _, t_env = get_execution_environment(StreamJobConfig())
     run_checkout_attribution_job(t_env)
