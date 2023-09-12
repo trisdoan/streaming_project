@@ -1,4 +1,4 @@
-CREATE TABLE attributed_checkouts (
+create table attributed_checkouts (
     checkout_id STRING,
     user_name STRING,
     click_id STRING,
@@ -12,7 +12,7 @@ CREATE TABLE attributed_checkouts (
     checkout_time TIMESTAMP(3),
     click_time TIMESTAMP,
     PRIMARY KEY (checkout_id) NOT ENFORCED
-) WITH (
+) with (
     'connector' = 'jdbc',
     'url' = 'jdbc:postgresql://postgres:5432/postgres',
     'table-name' = 'commerce.attributed_checkouts',

@@ -1,4 +1,4 @@
-CREATE TABLE clicks (
+create table clicks (
     click_id STRING,
     user_id INT,
     product_id STRING,
@@ -9,8 +9,8 @@ CREATE TABLE clicks (
     ip_address STRING,
     datetime_occured TIMESTAMP(3),
     processing_time AS PROCTIME(),
-    WATERMARK FOR datetime_occured AS datetime_occured - INTERVAL '15' SECOND
-) WITH (
+    watermark for datetime_occured as datetime_occured - interval '15' second
+) with (
     'connector' = '{{ connector }}',
     'topic' = '{{ topic }}',
     'properties.bootstrap.servers' = '{{ bootstrap_servers }}',

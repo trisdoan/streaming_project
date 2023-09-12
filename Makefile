@@ -10,7 +10,7 @@ sleep:
 
 ####################################################################################################################
 # Run ETL
-run-main-job:
+run-etl:
 	docker exec jobmanager ./bin/flink run --python ./src/run_checkout_attrs.py
 
 run: down up sleep run-main-job

@@ -1,9 +1,9 @@
-CREATE TEMPORARY TABLE users (
+create temporary table users (
     id INT,
     username STRING,
     PASSWORD STRING,
     PRIMARY KEY (id) NOT ENFORCED
-) WITH (
+) with (
     'connector' = '{{ connector }}',
     'url' = '{{ url }}',
     'table-name' = '{{ table_name }}',

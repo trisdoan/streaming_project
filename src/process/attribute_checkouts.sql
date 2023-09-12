@@ -1,6 +1,6 @@
-INSERT INTO
+insert into
     attributed_checkouts
-SELECT
+select
     checkout_id,
     user_name,
     click_id,
@@ -13,9 +13,9 @@ SELECT
     ip_address,
     checkout_time,
     click_time
-FROM
+from
     (
-        SELECT
+        select
             co.checkout_id,
             u.username AS user_name,
             cl.click_id,
@@ -34,13 +34,13 @@ FROM
                 ORDER BY
                     cl.datetime_occured
             ) AS rn
-        FROM
+        from
             checkouts AS co
-            JOIN users FOR SYSTEM_TIME AS OF co.processing_time AS u ON co.user_id = u.id
-            LEFT JOIN clicks AS cl ON co.user_id = cl.user_id
-            AND co.product_id = cl.product_id
-            AND co.datetime_occured BETWEEN cl.datetime_occured
-            AND cl.datetime_occured + INTERVAL '1' HOUR
+            join users FOR SYSTEM_TIME AS OF co.processing_time AS u ON co.user_id = u.id
+            left join clicks AS cl ON co.user_id = cl.user_id
+            and co.product_id = cl.product_id
+            and co.datetime_occured between cl.datetime_occured
+            and cl.datetime_occured + interval '1' hour
     )
-WHERE
+where
     rn = 1;
